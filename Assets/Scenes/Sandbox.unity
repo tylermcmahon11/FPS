@@ -3337,7 +3337,7 @@ PrefabInstance:
       objectReference: {fileID: 5393215579111688477}
     - target: {fileID: 7988252008833933125, guid: a327580a9a4204c44a976ee14383ac6c, type: 3}
       propertyPath: m_StoppingDistance
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
