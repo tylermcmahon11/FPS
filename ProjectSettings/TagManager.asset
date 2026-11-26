@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - StartButton
+  - EndButton
   layers:
   - Default
   - TransparentFX

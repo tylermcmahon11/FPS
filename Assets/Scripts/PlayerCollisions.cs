@@ -1,68 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerCollisions : MonoBehaviour
 {
-    public bool buttonHit = false;
+    GameObject startButton;
+    GameObject endButton;
+    VerticalScroll verticalScroll;
+    bool hasScrolled;   // Set when the scroll starts so it can't start again
 
-    [SerializeField] GameObject sinkingObject;
-
-    // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-    }
+        // Find the buttons by tag, then the (disabled) VerticalScroll on the start button's parent
+        startButton = GameObject.FindWithTag("StartButton");
+        endButton = GameObject.FindWithTag("EndButton");
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-
-    // Regular collision detection
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        // Checking if we're hitting the SomeTag
-        if(hit.gameObject.tag == "StartButton")
+        if (startButton != null)
         {
-            if (!buttonHit)
-            {
-                buttonHit = true;
-
-                if (sinkingObject != null)
-                {
-                    VerticalScroll startMove = sinkingObject.GetComponent<VerticalScroll>();
-
-                    if (startMove != null)
-                    {
-                        startMove.enabled = true;
-                    }
-                }
-            }
-            else
-            {
-                return;
-            }
+            verticalScroll = startButton.GetComponentInParent<VerticalScroll>();
         }
     }
 
-    // Trigger collision detection
-    private void OnTriggerEnter(Collider other)
+    void OnControllerColliderHit(ControllerColliderHit collision)
     {
-        if (other.gameObject.tag == "SomeTag")
+        if (verticalScroll == null)
         {
-            // Debug.Log("Hit the thing!");
-            // Other code here
+            return;
         }
-    }
 
-    // Trigger exit detection
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "SomeTag")
+        if (collision.gameObject == startButton && !hasScrolled)
         {
-            // Debug.Log("Left the thing!");
-            // Other code here
+            verticalScroll.enabled = true;
+            hasScrolled = true;
+        }
+        else if (collision.gameObject == endButton && verticalScroll.enabled)
+        {
+            verticalScroll.enabled = false;
         }
     }
 }
